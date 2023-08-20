@@ -43,9 +43,15 @@ val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 # model.to(device) # make sure all data and model in same device
 # save_model_dir = "torch_models/" + model_name +".pth" # define directory to save the model.
 
+# # define model for untrained googlenet
+# model = models.googlenet(pretrained=False)
+# model_name = "untrained_googlenet"
+# model.to(device) # make sure all data and model in same device
+# save_model_dir = "torch_models/" + model_name +".pth" # define directory to save the model.
+
 # define model for untrained googlenet
-model = models.googlenet(pretrained=False)
-model_name = "untrained_googlenet"
+model = models.vgg16(pretrained=False)
+model_name = "untrained_vgg16"
 model.to(device) # make sure all data and model in same device
 save_model_dir = "torch_models/" + model_name +".pth" # define directory to save the model.
 
@@ -75,10 +81,14 @@ for epoch in range(10):
             # outputs = model(inputs)
             # loss = criterion(outputs, labels)
 
-            # for googlenet
+            # # for googlenet
+            # outputs = model(inputs)
+            # predictions = outputs.logits
+            # loss = criterion(predictions, labels)
+
+            # for vggnet
             outputs = model(inputs)
-            predictions = outputs.logits
-            loss = criterion(predictions, labels)
+            loss = criterion(outputs, labels)
 
             loss.backward()
             optimizer.step()
